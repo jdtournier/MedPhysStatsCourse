@@ -11,9 +11,8 @@ plt.rcParams['figure.figsize'] = (7,5)
 
 def load_data (url):
   import urllib
-  with open ('example.csv', 'wb') as data:  
-    data.write (urllib.request.urlopen(url).read())
-  return pd.read_csv ('example.csv', na_values=['', ' '])
+  from io import StringIO
+  return pd.read_csv (StringIO (urllib.request.urlopen(url).read().decode()), na_values=['', ' '])
   
 
 def IQR (var):
