@@ -33,7 +33,7 @@ def confint (data, level=0.95):
 
 def VIF (model):
   from statsmodels.stats.outliers_influence import variance_inflation_factor
-  return pd.Series ([ variance_inflation_factor (result.model.exog, idx) for idx in range(1, len (result.model.exog_names)) ], index = result.model.exog_names[1:])
+  return pd.Series ([ variance_inflation_factor (model.exog, idx) for idx in range(1, len (model.exog_names)) ], index = model.exog_names[1:])
 
 
 def stepwise_forward_R2 (dataframe, dependent, candidates, selected=[]):
