@@ -25,10 +25,10 @@ def add_Normal (axes, data, width, color='orange'):
   
 
 def confint (data, level=0.95):
-  z = stats.norm.ppf(1-(1-level)/2)
+  t = stats.t.ppf(1-(1-level)/2, data.count()-1)
   m = data.mean()
   s = data.sem()
-  return [m-z*s, m+z*s]
+  return [m-t*s, m+t*s]
 
 
 def VIF (model):
