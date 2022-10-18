@@ -10,21 +10,46 @@ import matplotlib.pyplot as plt
 plt.rcParams['figure.figsize'] = (7,5)
 
 def load_data (url):
+  '''load the data at the specified URL into a pandas dataframe'''
+  
   import urllib
   from io import StringIO
   return pd.read_csv (StringIO (urllib.request.urlopen(url).read().decode()), na_values=['', ' '])
   
 
 def IQR (var):
+  '''Compute the interquartile range for the variable `var`'''
+  
   return var.quantile(0.75) - var.quantile(0.25)
   
 
 def add_Normal (axes, data, width, color='orange'):
+  '''
+  Add the Normal curve on top of e.g. a histogram.
+  
+  This requires a handle to the axes on which to add the curve (as 
+  returned by e.g. the corresponding seaborn histplot() call), 
+  the data for the relevant variable, and the bin width used in the 
+  original histogram. 
+  
+  For example:
+  
+      ax = sns.histplot (data=df['phadm'], binrange=[6.925, 7.525], binwidth=0.05);
+      add_Normal (ax, df['phadm'], 0.05)
+  '''
+  
   x = np.linspace (axes.get_xlim()[0], axes.get_xlim()[1])
   axes.plot (x, width*len(data)*stats.norm.pdf(x, data.mean(), data.std()), color=color);
   
 
 def confint (data, level=0.95):
+  '''
+  Return confidence interval for the mean at the relevant level.
+  
+  By default, the 95% level is assumed. This is computed using t-values, 
+  and is therefore suitable for small samples.
+  '''
+  
   t = stats.t.ppf(1-(1-level)/2, data.count()-1)
   m = data.mean()
   s = data.sem()
@@ -32,6 +57,8 @@ def confint (data, level=0.95):
 
 
 def VIF (model):
+  '''Compute the variance inflation factors for the variables in `model`.'''
+  
   from statsmodels.stats.outliers_influence import variance_inflation_factor
   return pd.Series ([ variance_inflation_factor (model.exog, idx) for idx in range(1, len (model.exog_names)) ], index = model.exog_names[1:])
 
