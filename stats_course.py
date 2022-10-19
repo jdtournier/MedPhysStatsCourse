@@ -4,7 +4,7 @@ import pandas as pd
 import statsmodels.api as sm
 from scipy import stats
 import seaborn as sns
-from google.colab import drive
+import statsmodels.formula.api as smf
 
 import matplotlib.pyplot as plt
 plt.rcParams['figure.figsize'] = (7,5)
@@ -209,8 +209,11 @@ def stepwise_backward_pval (dataframe, dependent, candidates, pvalue_threshold=0
       break
 
     # update model and iterate:
-    print ("\nremoving {} with p = {}\n".format (candidates[idx], pvalues[idx]))
-    candidates.pop(idx)
+    var_to_remove = model.pvalues.index[idx+1]
+    if var_to_remove.startswith ('C('):
+      var_to_remove = var_to_remove.split (')',1)[0]+')'
+    print ("\nremoving {} with p = {}\n".format (var_to_remove, pvalues[idx]))
+    candidates.remove(var_to_remove)
     
   print ("\nfinal model:")
   report (model)
