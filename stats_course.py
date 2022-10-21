@@ -73,7 +73,7 @@ def stepwise_forward_R2 (dataframe, dependent, candidates, selected=[]):
   # initial formula, with a single constant as independent 
   # if 'selected' is empty, or the contents of 'selected' otherwise.
   formula = "{} ~ {}".format (dependent, ' + '.join (selected) if len(selected) else '1')
-  best_model = smf.ols (formula, data=df).fit()
+  best_model = smf.ols (formula, data=dataframe).fit()
   report (best_model)
 
   # blank line
@@ -85,7 +85,7 @@ def stepwise_forward_R2 (dataframe, dependent, candidates, selected=[]):
     models = []
     for var in candidates:
       formula = "{} ~ {}".format (dependent, ' + '.join (selected + [ var ]))
-      models.append (smf.ols (formula, data=df).fit())
+      models.append (smf.ols (formula, data=dataframe).fit())
       report (models[-1])
 
     # identify best model and stop if not better than current R²:
@@ -112,7 +112,7 @@ def stepwise_backward_R2 (dataframe, dependent, candidates):
 
   # initial formula, with all candidates as independents:
   formula = "{} ~ {}".format (dependent, ' + '.join (candidates))   # <== (1)
-  best_model = smf.ols (formula, data=df).fit()
+  best_model = smf.ols (formula, data=dataframe).fit()
   report (best_model)
 
   # blank line
@@ -124,7 +124,7 @@ def stepwise_backward_R2 (dataframe, dependent, candidates):
     models = []
     for var in candidates:
       formula = "{} ~ {}".format (dependent, ' + '.join ([ x for x in candidates if x != var ]))    # <== (2)
-      models.append (smf.ols (formula, data=df).fit())
+      models.append (smf.ols (formula, data=dataframe).fit())
       report (models[-1])
 
     # identify best model and stop if not better than current R²:
@@ -154,7 +154,7 @@ def stepwise_forward_pval (dataframe, dependent, candidates, pvalue_threshold=0.
   # initial formula, with a single constant as independent 
   # if 'selected' is empty, or the contents of 'selected' otherwise.
   formula = "{} ~ {}".format (dependent, ' + '.join (selected) if len(selected) else '1')
-  best_model = smf.ols (formula, data=df).fit()
+  best_model = smf.ols (formula, data=dataframe).fit()
   report (best_model)
 
   # blank line
@@ -166,7 +166,7 @@ def stepwise_forward_pval (dataframe, dependent, candidates, pvalue_threshold=0.
     models = []
     for var in candidates:
       formula = "{} ~ {}".format (dependent, ' + '.join (selected + [ var ]))
-      models.append (smf.ols (formula, data=df).fit())
+      models.append (smf.ols (formula, data=dataframe).fit())
       report (models[-1])
 
     # identify best model and stop if not below threshold:
@@ -198,7 +198,7 @@ def stepwise_backward_pval (dataframe, dependent, candidates, pvalue_threshold=0
   # iterate while there are still independent candidates to check:
   while len (candidates) > 0:
     formula = "{} ~ {}".format (dependent, ' + '.join (candidates))
-    model = smf.ols (formula, data=df).fit()
+    model = smf.ols (formula, data=dataframe).fit()
     report (model)
 
     # find variable with highest p-values (ignoring intercept):
