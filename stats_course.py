@@ -212,7 +212,7 @@ def stepwise_backward_pval (dataframe, dependent, candidates, pvalue_threshold=0
     var_to_remove = model.pvalues.index[idx+1]
     if var_to_remove.startswith ('C('):
       var_to_remove = var_to_remove.split (')',1)[0]+')'
-    print ("\nremoving {} with p = {}\n".format (var_to_remove, pvalues[idx]))
+    print ("\nremoving {} with p = {}\n".format (var_to_remove, pvalues.iloc[idx]))
     candidates.remove(var_to_remove)
     
   print ("\nfinal model:")
