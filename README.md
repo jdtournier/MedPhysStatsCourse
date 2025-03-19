@@ -7,9 +7,13 @@ This consists of the example dataset (`example.csv`), and a Python module contai
 
 The easiest way to import this module is by placing this code snippet at the head of your notebook. Note that it will also import all the modules necessary for the course.
 ```
-import httpimport
-with httpimport.remote_repo(['stats_course'], 'https://raw.githubusercontent.com/jdtournier/MedPhysStatsCourse/main/'):
-    from stats_course import *
+import urllib
+url = 'https://raw.githubusercontent.com/jdtournier/MedPhysStatsCourse/main/stats_course.py'
+
+with open ('stats_course.py', 'wb') as data:
+  data.write (urllib.request.urlopen(url).read())
+
+from stats_course import *
 ```
 
 ## Content of Python module:
