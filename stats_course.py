@@ -205,7 +205,7 @@ def stepwise_backward_pval (dataframe, dependent, candidates, pvalue_threshold=0
     pvalues = model.pvalues[1:]
     idx = np.argmax (pvalues)
     # if worst variable is below threshold, stop:
-    if pvalues[idx] <= pvalue_threshold:
+    if pvalues.iloc[idx] <= pvalue_threshold:
       break
 
     # update model and iterate:
